@@ -4,7 +4,7 @@
  * @param {Number} number
  * @param {Function} onUnlock
  */
-function DoorBase(number, onUnlock) {
+export function DoorBase(number, onUnlock) {
     this.number = number;
     this.onUnclockCallback = onUnlock;
 

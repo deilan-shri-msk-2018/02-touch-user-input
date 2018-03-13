@@ -1,8 +1,10 @@
+import { Door0, Door1, Door2, Box } from './doorOthers';
+
 /**
  * @class App
  * @param {Element} el
  */
-function App(el) {
+export function App(el) {
     var appEl = el,
         doors = [
             new Door0(0, onUnlock),
@@ -33,6 +35,3 @@ function App(el) {
         }
     };
 }
-
-// Start the app
-var app = new App(document.querySelector('.app'));

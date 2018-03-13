@@ -1,3 +1,5 @@
+import { DoorBase } from './doorBase';
+
 // ===================== Пример кода первой двери =======================
 /**
  * @class Door0
@@ -5,7 +7,7 @@
  * @param {Number} number
  * @param {Function} onUnlock
  */
-function Door0(number, onUnlock) {
+export function Door0(number, onUnlock) {
     DoorBase.apply(this, arguments);
 
     var buttons = [
@@ -59,7 +61,7 @@ Door0.prototype.constructor = DoorBase;
  * @param {Number} number
  * @param {Function} onUnlock
  */
-function Door1(number, onUnlock) {
+export function Door1(number, onUnlock) {
     DoorBase.apply(this, arguments);
 
     // ==== Напишите свой код для открытия второй двери здесь ====
@@ -78,7 +80,7 @@ Door1.prototype.constructor = DoorBase;
  * @param {Number} number
  * @param {Function} onUnlock
  */
-function Door2(number, onUnlock) {
+export function Door2(number, onUnlock) {
     DoorBase.apply(this, arguments);
 
     // ==== Напишите свой код для открытия третей двери здесь ====
@@ -98,7 +100,7 @@ Door2.prototype.constructor = DoorBase;
  * @param {Number} number
  * @param {Function} onUnlock
  */
-function Box(number, onUnlock) {
+export function Box(number, onUnlock) {
     DoorBase.apply(this, arguments);
 
     // ==== Напишите свой код для открытия сундука здесь ====

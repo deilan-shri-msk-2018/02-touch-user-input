@@ -26,6 +26,7 @@
     "webpack-dev-server": "3.1.1"
   },
   "dependencies": {
-    "pepjs": "0.4.3"
+    "pepjs": "0.4.3",
+    "reset-css": "2.2.1"
   }
 }

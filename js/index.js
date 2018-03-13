@@ -1,4 +1,4 @@
-import '../css/reset.css';
+import '../node_modules/reset-css/reset.css';
 import '../css/app.css';
 
 import '../node_modules/pepjs/dist/pep';

@@ -2,7 +2,7 @@
   "name": "02-touch-user-input",
   "version": "1.0.0",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0",
+    "start": "webpack-dev-server --host 0.0.0.0 --port 3000",
     "build": "webpack"
   },
   "repository": {
@@ -16,6 +16,8 @@
   },
   "homepage": "https://github.com/deilan-shri-msk-2018/02-touch-user-input#readme",
   "devDependencies": {
+    "browser-sync": "2.23.6",
+    "browser-sync-webpack-plugin": "2.0.1",
     "clean-webpack-plugin": "0.1.19",
     "css-loader": "0.28.10",
     "file-loader": "1.1.11",

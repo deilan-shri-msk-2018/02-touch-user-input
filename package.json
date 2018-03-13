@@ -2,7 +2,7 @@
   "name": "02-touch-user-input",
   "version": "1.0.0",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --host 0.0.0.0",
     "build": "webpack"
   },
   "repository": {

@@ -184,3 +184,21 @@ body {
 .door-riddle__button_pressed {
     background-color: #F3E5D9;
 }
+
+.door-riddle__button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F3E9E0;
+
+  user-select: none;
+}
+
+.door-riddle__button_pressed {
+    color: #583319;
+}
+
+.popup_level_1 .door-riddle {
+  display: grid;
+  grid-template: repeat(3, auto) / repeat(3, auto);
+}

@@ -4,7 +4,7 @@ import '../css/app.css';
 import '../node_modules/pepjs/dist/pep';
 
 import {
-  App
+    App
 } from './app';
 
-var app = new App(document.querySelector('.app'));
+new App(document.querySelector('.app'));

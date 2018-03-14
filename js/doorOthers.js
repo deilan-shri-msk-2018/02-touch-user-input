@@ -1,64 +1,62 @@
 import {
-  DoorBase
+    DoorBase
 } from './doorBase';
 
 // ===================== Пример кода первой двери =======================
 /**
  * @class Door0
  * @augments DoorBase
- * @param {Number} number
- * @param {Function} onUnlock
  */
-export function Door0(number, onUnlock) {
-  DoorBase.apply(this, arguments);
+export function Door0() {
+    DoorBase.apply(this, arguments);
 
-  var onButtonPointerDown = _onButtonPointerDown.bind(this);
-  var onButtonPointerUp = _onButtonPointerUp.bind(this);
+    var onButtonPointerDown = _onButtonPointerDown.bind(this);
+    var onButtonPointerUp = _onButtonPointerUp.bind(this);
 
-  var buttons = [
-    this.popup.querySelector('.door-riddle__button_0'),
-    this.popup.querySelector('.door-riddle__button_1'),
-    this.popup.querySelector('.door-riddle__button_2')
-  ];
+    var buttons = [
+        this.popup.querySelector('.door-riddle__button_0'),
+        this.popup.querySelector('.door-riddle__button_1'),
+        this.popup.querySelector('.door-riddle__button_2')
+    ];
 
-  buttons.forEach(function (b) {
-    b.addEventListener('pointerdown', onButtonPointerDown);
-    b.addEventListener('pointerup', onButtonPointerUp);
-    b.addEventListener('pointercancel', onButtonPointerUp);
-    b.addEventListener('pointerleave', onButtonPointerUp);
-  }.bind(this));
-
-  function _onButtonPointerDown(e) {
-    e.target.classList.add('door-riddle__button_pressed');
-    var isOpened = checkCondition.apply(this);
-    // Если все три кнопки зажаты одновременно, то откроем эту дверь
-    if (isOpened) {
-      this.unlock();
-      buttons.forEach(function(button) {
-        button.removeEventListener('pointerdown', onButtonPointerDown);
-        button.removeEventListener('pointerup', onButtonPointerUp);
-        button.removeEventListener('pointercancel', onButtonPointerUp);
-        button.removeEventListener('pointerleave', onButtonPointerUp);
-      })
-    }
-  }
-
-  function _onButtonPointerUp(e) {
-    e.target.classList.remove('door-riddle__button_pressed');
-  }
-
-  /**
-   * Проверяем, можно ли теперь открыть дверь
-   */
-  function checkCondition() {
-    var isOpened = true;
     buttons.forEach(function (b) {
-      if (!b.classList.contains('door-riddle__button_pressed')) {
-        isOpened = false;
-      }
+        b.addEventListener('pointerdown', onButtonPointerDown);
+        b.addEventListener('pointerup', onButtonPointerUp);
+        b.addEventListener('pointercancel', onButtonPointerUp);
+        b.addEventListener('pointerleave', onButtonPointerUp);
     });
-    return isOpened;
-  }
+
+    function _onButtonPointerDown(e) {
+        e.target.classList.add('door-riddle__button_pressed');
+        var isOpened = checkCondition.apply(this);
+        // Если все три кнопки зажаты одновременно, то откроем эту дверь
+        if (isOpened) {
+            this.unlock();
+            buttons.forEach(function (button) {
+                button.removeEventListener('pointerdown', onButtonPointerDown);
+                button.removeEventListener('pointerup', onButtonPointerUp);
+                button.removeEventListener('pointercancel', onButtonPointerUp);
+                button.removeEventListener('pointerleave', onButtonPointerUp);
+            });
+        }
+    }
+
+    function _onButtonPointerUp(e) {
+        e.target.classList.remove('door-riddle__button_pressed');
+    }
+
+    /**
+     * Проверяем, можно ли теперь открыть дверь
+     */
+    function checkCondition() {
+        var isOpened = true;
+        buttons.forEach(function (b) {
+            if (!b.classList.contains('door-riddle__button_pressed')) {
+                isOpened = false;
+            }
+        });
+        return isOpened;
+    }
 }
 
 // Наследуемся от класса DoorBase
@@ -69,115 +67,113 @@ Door0.prototype.constructor = DoorBase;
 /**
  * @class Door1
  * @augments DoorBase
- * @param {Number} number
- * @param {Function} onUnlock
  */
-export function Door1(number, onUnlock) {
-  DoorBase.apply(this, arguments);
+export function Door1() {
+    DoorBase.apply(this, arguments);
 
-  // ==== Напишите свой код для открытия второй двери здесь ====
-  var doorRiddle = this.popup.querySelector('.door-riddle');
+    // ==== Напишите свой код для открытия второй двери здесь ====
+    var doorRiddle = this.popup.querySelector('.door-riddle');
 
-  var buttons = Array.from(doorRiddle.querySelectorAll('.door-riddle__button'))
-    .sort(function (a, b) {
-      return getButtonNumber(a) - getButtonNumber(b);
-    });
+    var buttons = Array.from(doorRiddle.querySelectorAll('.door-riddle__button'))
+        .sort(function (a, b) {
+            return getButtonNumber(a) - getButtonNumber(b);
+        });
 
-  if (buttons[0]) {
-    buttons[0].addEventListener('pointerdown', onPointerDown);
-  }
-
-  function onPointerDown(e) {
-    var currentButton = e.target;
-    currentButton.removeEventListener('pointerdown', onPointerDown);
-    press(currentButton);
-    setup(currentButton);
-    doorRiddle.addEventListener('pointerup', onPointerUp);
-    doorRiddle.addEventListener('pointercancel', onPointerUp);
-    doorRiddle.addEventListener('pointerleave', onPointerUp);
-  };
-
-  function onPointerCorrectMove(e) {
-    var currentButton = e.target;
-    currentButton.removeEventListener('pointermove', onPointerCorrectMove);
-    press(currentButton);
-    setup(currentButton);
-  };
-
-  function onPointerIncorrectMove(e) {
-    reset();
-  };
-
-  var onPointerUp = function (e) {
-    var isOpened = checkCondition.apply(this);
-    if (isOpened) {
-      this.unlock();
-    } else {
-      reset();
+    if (buttons[0]) {
+        buttons[0].addEventListener('pointerdown', onPointerDown);
     }
-    doorRiddle.removeEventListener('pointerup', onPointerUp);
-    doorRiddle.removeEventListener('pointercancel', onPointerUp);
-    doorRiddle.removeEventListener('pointerleave', onPointerUp);
-  }.bind(this);
 
-  function setup(currentButton) {
-    var buttonNumber = getButtonNumber(currentButton);
-    var nextButton = buttons.find(function (button) {
-      return button.classList.contains('door-riddle__button_' + (buttonNumber + 1));
-    });
-    if (nextButton) {
-      nextButton.removeEventListener('pointermove', onPointerIncorrectMove)
-      nextButton.addEventListener('pointermove', onPointerCorrectMove);
+    function onPointerDown(e) {
+        var currentButton = e.target;
+        currentButton.removeEventListener('pointerdown', onPointerDown);
+        press(currentButton);
+        setup(currentButton);
+        doorRiddle.addEventListener('pointerup', onPointerUp);
+        doorRiddle.addEventListener('pointercancel', onPointerUp);
+        doorRiddle.addEventListener('pointerleave', onPointerUp);
     }
-    var restButtons = buttons.filter(function (button) {
-      return button !== nextButton &&
-        !button.classList.contains('door-riddle__button_pressed');
-    });
-    restButtons.forEach(function (button) {
-      button.addEventListener('pointermove', onPointerIncorrectMove);
-    });
-  }
 
-  function reset() {
-    buttons.forEach(function (button) {
-      release(button);
-      button.removeEventListener('pointermove', onPointerIncorrectMove);
-      button.removeEventListener('pointermove', onPointerCorrectMove);
-    });
-    buttons[0].addEventListener('pointerdown', onPointerDown);
-  }
-
-  function press(buttonEl) {
-    buttonEl.classList.add('door-riddle__button_pressed');
-  }
-
-  function release(buttonEl) {
-    buttonEl.classList.remove('door-riddle__button_pressed');
-  }
-
-  function getButtonNumber(buttonEl) {
-    var className = buttonEl.className.split(' ').find(function (className) {
-      return className.startsWith('door-riddle__button_');
-    });
-    if (className) {
-      var number = className.substring('door-riddle__button_'.length);
-      return parseInt(number, 10);
+    function onPointerCorrectMove(e) {
+        var currentButton = e.target;
+        currentButton.removeEventListener('pointermove', onPointerCorrectMove);
+        press(currentButton);
+        setup(currentButton);
     }
-  }
 
-  /**
-   * Проверяем, можно ли теперь открыть дверь
-   */
-  function checkCondition() {
-    var isOpened = true;
-    buttons.forEach(function (b) {
-      if (!b.classList.contains('door-riddle__button_pressed')) {
-        isOpened = false;
-      }
-    });
-    return isOpened;
-  }
-  // ==== END Напишите свой код для открытия второй двери здесь ====
+    function onPointerIncorrectMove() {
+        reset();
+    }
+
+    var onPointerUp = function () {
+        var isOpened = checkCondition.apply(this);
+        if (isOpened) {
+            this.unlock();
+        } else {
+            reset();
+        }
+        doorRiddle.removeEventListener('pointerup', onPointerUp);
+        doorRiddle.removeEventListener('pointercancel', onPointerUp);
+        doorRiddle.removeEventListener('pointerleave', onPointerUp);
+    }.bind(this);
+
+    function setup(currentButton) {
+        var buttonNumber = getButtonNumber(currentButton);
+        var nextButton = buttons.find(function (button) {
+            return button.classList.contains('door-riddle__button_' + (buttonNumber + 1));
+        });
+        if (nextButton) {
+            nextButton.removeEventListener('pointermove', onPointerIncorrectMove);
+            nextButton.addEventListener('pointermove', onPointerCorrectMove);
+        }
+        var restButtons = buttons.filter(function (button) {
+            return button !== nextButton &&
+                !button.classList.contains('door-riddle__button_pressed');
+        });
+        restButtons.forEach(function (button) {
+            button.addEventListener('pointermove', onPointerIncorrectMove);
+        });
+    }
+
+    function reset() {
+        buttons.forEach(function (button) {
+            release(button);
+            button.removeEventListener('pointermove', onPointerIncorrectMove);
+            button.removeEventListener('pointermove', onPointerCorrectMove);
+        });
+        buttons[0].addEventListener('pointerdown', onPointerDown);
+    }
+
+    function press(buttonEl) {
+        buttonEl.classList.add('door-riddle__button_pressed');
+    }
+
+    function release(buttonEl) {
+        buttonEl.classList.remove('door-riddle__button_pressed');
+    }
+
+    function getButtonNumber(buttonEl) {
+        var className = buttonEl.className.split(' ').find(function (className) {
+            return className.startsWith('door-riddle__button_');
+        });
+        if (className) {
+            var number = className.substring('door-riddle__button_'.length);
+            return parseInt(number, 10);
+        }
+    }
+
+    /**
+     * Проверяем, можно ли теперь открыть дверь
+     */
+    function checkCondition() {
+        var isOpened = true;
+        buttons.forEach(function (b) {
+            if (!b.classList.contains('door-riddle__button_pressed')) {
+                isOpened = false;
+            }
+        });
+        return isOpened;
+    }
+    // ==== END Напишите свой код для открытия второй двери здесь ====
 }
 Door1.prototype = Object.create(DoorBase.prototype);
 Door1.prototype.constructor = DoorBase;
@@ -185,18 +181,16 @@ Door1.prototype.constructor = DoorBase;
 /**
  * @class Door2
  * @augments DoorBase
- * @param {Number} number
- * @param {Function} onUnlock
  */
-export function Door2(number, onUnlock) {
-  DoorBase.apply(this, arguments);
+export function Door2() {
+    DoorBase.apply(this, arguments);
 
-  // ==== Напишите свой код для открытия третей двери здесь ====
-  // Для примера дверь откроется просто по клику на неё
-  this.popup.addEventListener('click', function () {
-    this.unlock();
-  }.bind(this));
-  // ==== END Напишите свой код для открытия третей двери здесь ====
+    // ==== Напишите свой код для открытия третей двери здесь ====
+    // Для примера дверь откроется просто по клику на неё
+    this.popup.addEventListener('click', function () {
+        this.unlock();
+    }.bind(this));
+    // ==== END Напишите свой код для открытия третей двери здесь ====
 }
 Door2.prototype = Object.create(DoorBase.prototype);
 Door2.prototype.constructor = DoorBase;
@@ -208,19 +202,19 @@ Door2.prototype.constructor = DoorBase;
  * @param {Number} number
  * @param {Function} onUnlock
  */
-export function Box(number, onUnlock) {
-  DoorBase.apply(this, arguments);
+export function Box() {
+    DoorBase.apply(this, arguments);
 
-  // ==== Напишите свой код для открытия сундука здесь ====
-  // Для примера сундук откроется просто по клику на него
-  this.popup.addEventListener('click', function () {
-    this.unlock();
-  }.bind(this));
-  // ==== END Напишите свой код для открытия сундука здесь ====
+    // ==== Напишите свой код для открытия сундука здесь ====
+    // Для примера сундук откроется просто по клику на него
+    this.popup.addEventListener('click', function () {
+        this.unlock();
+    }.bind(this));
+    // ==== END Напишите свой код для открытия сундука здесь ====
 
-  this.showCongratulations = function () {
-    alert('Поздравляю! Игра пройдена!');
-  };
+    this.showCongratulations = function () {
+        alert('Поздравляю! Игра пройдена!');
+    };
 }
 Box.prototype = Object.create(DoorBase.prototype);
 Box.prototype.constructor = DoorBase;

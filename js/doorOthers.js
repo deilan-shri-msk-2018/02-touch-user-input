@@ -12,6 +12,9 @@ import {
 export function Door0(number, onUnlock) {
   DoorBase.apply(this, arguments);
 
+  var onButtonPointerDown = _onButtonPointerDown.bind(this);
+  var onButtonPointerUp = _onButtonPointerUp.bind(this);
+
   var buttons = [
     this.popup.querySelector('.door-riddle__button_0'),
     this.popup.querySelector('.door-riddle__button_1'),
@@ -19,15 +22,25 @@ export function Door0(number, onUnlock) {
   ];
 
   buttons.forEach(function (b) {
-    b.addEventListener('pointerdown', _onButtonPointerDown.bind(this));
-    b.addEventListener('pointerup', _onButtonPointerUp.bind(this));
-    b.addEventListener('pointercancel', _onButtonPointerUp.bind(this));
-    b.addEventListener('pointerleave', _onButtonPointerUp.bind(this));
+    b.addEventListener('pointerdown', onButtonPointerDown);
+    b.addEventListener('pointerup', onButtonPointerUp);
+    b.addEventListener('pointercancel', onButtonPointerUp);
+    b.addEventListener('pointerleave', onButtonPointerUp);
   }.bind(this));
 
   function _onButtonPointerDown(e) {
     e.target.classList.add('door-riddle__button_pressed');
-    checkCondition.apply(this);
+    var isOpened = checkCondition.apply(this);
+    // Если все три кнопки зажаты одновременно, то откроем эту дверь
+    if (isOpened) {
+      this.unlock();
+      buttons.forEach(function(button) {
+        button.removeEventListener('pointerdown', onButtonPointerDown);
+        button.removeEventListener('pointerup', onButtonPointerUp);
+        button.removeEventListener('pointercancel', onButtonPointerUp);
+        button.removeEventListener('pointerleave', onButtonPointerUp);
+      })
+    }
   }
 
   function _onButtonPointerUp(e) {
@@ -44,11 +57,7 @@ export function Door0(number, onUnlock) {
         isOpened = false;
       }
     });
-
-    // Если все три кнопки зажаты одновременно, то откроем эту дверь
-    if (isOpened) {
-      this.unlock();
-    }
+    return isOpened;
   }
 }
 

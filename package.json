@@ -2,8 +2,9 @@
   "name": "02-touch-user-input",
   "version": "1.0.0",
   "scripts": {
-    "start": "webpack-dev-server --host 0.0.0.0 --port 3000",
-    "build": "webpack"
+    "start": "webpack-dev-server --config ./webpack.config.dev.js --host 0.0.0.0 --port 3000",
+    "build:dev": "webpack --config ./webpack.config.dev.js",
+    "build:prod": "webpack --config ./webpack.config.prod.js"
   },
   "repository": {
     "type": "git",

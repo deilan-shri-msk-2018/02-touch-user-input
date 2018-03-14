@@ -69,9 +69,12 @@ export function Door1(number, onUnlock) {
   // ==== Напишите свой код для открытия второй двери здесь ====
   var doorRiddle = this.popup.querySelector('.door-riddle');
 
-  var buttons = Array.from(doorRiddle.querySelectorAll('.door-riddle__button'));
+  var buttons = Array.from(doorRiddle.querySelectorAll('.door-riddle__button'))
+    .sort(function (a, b) {
+      return getButtonNumber(a) - getButtonNumber(b);
+    });
 
-  if(buttons[0]) {
+  if (buttons[0]) {
     buttons[0].addEventListener('pointerdown', onPointerDown);
   }
 

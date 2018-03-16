@@ -202,3 +202,70 @@ body {
   display: grid;
   grid-template: repeat(3, auto) / repeat(3, auto);
 }
+
+.door-riddle__button {
+    position: relative;
+    z-index: 1;
+}
+
+.door-riddle__button::after {
+    display: none;
+    position: absolute;
+    content:"";
+    background-color: #F3E5D9;
+    z-index: 0;
+    width: 4px;
+    height: 4px;
+}
+
+.door-riddle__button_2::after {
+    right: 100%;
+    top: calc(50% - 2px);
+    width: 70px;
+}
+
+.door-riddle__button_3::after {
+    bottom: 100%;
+    left: calc(50% - 2px);
+    height: 250px;
+}
+
+.door-riddle__button_4::after {
+    left: 100%;
+    top: calc(50% - 2px);
+    width: 70px;
+}
+
+.door-riddle__button_5::after {
+    bottom: 100%;
+    left: calc(50% - 2px);
+    height: 250px;
+}
+
+.door-riddle__button_6::after {
+    right: 100%;
+    top: calc(50% - 2px);
+    width: 70px;
+}
+
+.door-riddle__button_7::after {
+    right: 100%;
+    top: calc(50% - 2px);
+    width: 70px;
+}
+
+.door-riddle__button_8::after {
+    top: 100%;
+    left: calc(50% - 2px);
+    height: 250px;
+}
+
+.door-riddle__button_9::after {
+    top: 100%;
+    left: calc(50% - 2px);
+    height: 250px;
+}
+
+.door-riddle__button_pressed::after {
+    display: block;
+}

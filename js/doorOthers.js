@@ -85,6 +85,7 @@ export function Door1() {
 
     function onPointerDown(e) {
         var currentButton = e.target;
+        currentButton.releasePointerCapture(e.pointerId);
         currentButton.removeEventListener('pointerdown', onPointerDown);
         press(currentButton);
         setup(currentButton);
